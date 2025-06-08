@@ -1,0 +1,44 @@
+
+version: '3.9'
+
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: finsave
+    ports:
+      - "5432:5432"
+
+  auth-service:
+    build: ./backend/auth-service
+    ports:
+      - "8001:8001"
+
+  expense-service:
+    build: ./backend/expense-service
+    ports:
+      - "8002:8002"
+
+  reminder-service:
+    build: ./backend/reminder-service
+    ports:
+      - "8003:8003"
+
+  api-gateway:
+    build: ./backend/api-gateway
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
